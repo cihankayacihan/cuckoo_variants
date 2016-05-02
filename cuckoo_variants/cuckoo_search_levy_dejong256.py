@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import scipy.special as sp
+import scipy.stats as ss 
 
 Tol = 1e-6
 
@@ -49,11 +50,11 @@ def get_cuckoos(nest, best, Lb, Ub):
 	sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
 	for j in range(n):
 		s = nest[j,:]
-		u=np.random.randn(s.shape[0])*sigma
-		v=np.random.randn(s.shape[0])
-		step=u/abs(v)**(1/beta)
-		stepsize=0.01*step*(s-best);
-		s=s+stepsize*np.random.randn(s.shape[0])
+		#u=np.random.randn(s.shape[0])*sigma
+		#v=np.random.randn(s.shape[0])
+		#step=u/abs(v)**(1/beta)
+		#stepsize=0.01*step*(s-best);
+		s=s+ss.levy.rvs(size=256)*1e-40
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 
@@ -103,6 +104,7 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 
 	""" This function creates a group of cuckoos and optimizes fitness function. """
 
+	global Tol
 	n = nest.shape[0]
 	fmin, best, nest, fitness = get_best_nest(nest, nest, fitness)
 	new_best = fmin
@@ -112,7 +114,7 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 	N_iter=0
 	k = 0
 
-	while N_iter < 100000:
+	while N_iter < 1000000:
 		new_nest = get_cuckoos(nest, best, Lb, Ub)
 		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
 		N_iter = N_iter + n
@@ -128,7 +130,7 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 	return bestnest, fmin, nest, fitness, N_iter
 
 if __name__ == '__main__':
-	true_best_nest = np.zeros(256)
+	true_best_score = 0
 	pa = np.linspace(0.1,0.9,9)
 	correct_ratio = np.zeros(9)
 	iters = np.zeros(9)
@@ -138,9 +140,10 @@ if __name__ == '__main__':
 	for j in range(9):
 		print pa[j]
 		for i in range(100):
-			print i
+			if i %10 ==0:
+				print i
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
-			if np.linalg.norm(true_best_nest-best_nest)<1e-2:
+			if abs(true_best_score-fmin)<1:
 				all_corrects[j,i]=1
 			all_iters[j,i]=N_iter
 		correct_ratio[j] = np.mean(all_corrects[j,:])

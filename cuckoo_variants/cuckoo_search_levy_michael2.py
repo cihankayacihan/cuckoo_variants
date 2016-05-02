@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import scipy.special as sp
+import scipy.stats as ss 
 
 Tol = 1e-6
 
@@ -44,15 +45,15 @@ def get_cuckoos(nest, best, Lb, Ub):
 	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
 	sampled from Cauchy distribution. For sampling Mantegna method is used. """
 	n = nest.shape[0]
-	beta=3/2;
-	sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
+	#beta=3/2;
+	#sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
 	for j in range(n):
 		s = nest[j,:]
-		u=np.random.randn(s.shape[0])*sigma
-		v=np.random.randn(s.shape[0])
-		step=u/abs(v)**(1/beta)
-		stepsize=0.01*step*(s-best);
-		s=s+stepsize*np.random.randn(s.shape[0])
+		#u=np.random.randn(s.shape[0])*sigma
+		#v=np.random.randn(s.shape[0])
+		#step=u/abs(v)**(1/beta)
+		#stepsize=0.01*step*(s-best);
+		s=s+ss.levy.rvs(size=2)*1e-10
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 
@@ -135,6 +136,7 @@ if __name__ == '__main__':
 	all_iters = np.zeros((9,100))
 	all_corrects = np.zeros((9,100))
 	for j in range(9):
+		print pa[j]
 		for i in range(100):
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
 			if np.linalg.norm(true_best_nest-best_nest)<1e-2:

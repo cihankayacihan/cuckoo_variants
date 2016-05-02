@@ -4,8 +4,9 @@ import multiprocessing as mp
 from joblib import Parallel, delayed
 import scipy.special as sp
 import itertools
+import scipy.stats as ss 
 
-Tol = 1e-6
+Tol = 1e-1
 
 def fobj(u):
 	x=u[0]
@@ -41,17 +42,20 @@ def get_best_nest(nest, newnest, fitness):
 	best = nest[K,:]
 	return (fmin, best, nest, fitness)
 
-def get_cuckoos(nest, best, Lb, Ub, stepx):
+def get_cuckoos(nest, best, Lb, Ub, step):
+
+	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
+	sampled from Cauchy distribution. For sampling Mantegna method is used. """
 	n = nest.shape[0]
-	beta=3/2;
-	sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
+	#beta=3/2;
+	#sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
 	for j in range(n):
 		s = nest[j,:]
-		u=np.random.randn(s.shape[0])*sigma
-		v=np.random.randn(s.shape[0])
-		step=u/abs(v)**(1/beta)
-		stepsize=stepx*step*(s-best);
-		s=s+stepsize*np.random.randn(s.shape[0])
+		#u=np.random.randn(s.shape[0])*sigma
+		#v=np.random.randn(s.shape[0])
+		#step=u/abs(v)**(1/beta)
+		#stepsize=0.01*step*(s-best);
+		s=s+ss.levy.rvs(size=2)*1e-10
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 
@@ -106,6 +110,7 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 
 	n_jobs = mp.cpu_count()
 	for i in range(100):
+		
 		a = Parallel(n_jobs=n_jobs)(delayed(single_cuckoo_search)(nests[j],fitness[j],Lb,Ub,all_para[j],step) for j in range(9))
 		best_nest, fmin, nests, fitness, N_iter, done = zip(*a)
 		if True in done:
@@ -161,8 +166,9 @@ if __name__ == '__main__':
 	all_iters = np.zeros(100)
 	all_corrects = np.zeros(100)
 	for i in range(100):
+		print i
 		best_nest, fmin, nest, fitness, total_best_min, total_best_nest, total_iteration = cuckoo_search()
-		if abs(true_fmin-total_best_min)<1::
+		if abs(true_fmin-total_best_min)<1:
 			all_corrects[i]=1
 		all_iters[i]=total_iteration
 	print np.mean(all_corrects), np.mean(all_iters), np.std(all_iters)

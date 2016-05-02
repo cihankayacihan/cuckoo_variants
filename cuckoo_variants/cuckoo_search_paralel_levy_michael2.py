@@ -4,6 +4,7 @@ import multiprocessing as mp
 from joblib import Parallel, delayed
 import scipy.special as sp
 import itertools
+import scipy.stats as ss 
 
 Tol = 1e-6
 
@@ -42,11 +43,12 @@ def get_cuckoos(nest, best, Lb, Ub, stepx):
 	sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
 	for j in range(n):
 		s = nest[j,:]
-		u=np.random.randn(s.shape[0])*sigma
-		v=np.random.randn(s.shape[0])
-		step=u/abs(v)**(1/beta)
-		stepsize=stepx*step*(s-best);
-		s=s+stepsize*np.random.randn(s.shape[0])
+		# u=np.random.randn(s.shape[0])*sigma
+		# v=np.random.randn(s.shape[0])
+		# step=u/abs(v)**(1/beta)
+		# stepsize=stepx*step*(s-best);
+		# s=s+stepsize*np.random.randn(s.shape[0])
+		s=s+ss.levy.rvs(size=2)*1e-10
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 

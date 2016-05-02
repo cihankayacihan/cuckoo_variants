@@ -156,7 +156,7 @@ if __name__ == '__main__':
 		print pa[j]
 		for i in range(100):
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
-			if np.linalg.norm(true_best_nest-best_nest)<1e-1:
+			if np.linalg.norm(true_best_nest-best_nest)<1e-:
 				all_corrects[j,i]=1
 			all_iters[j,i]=N_iter
 		correct_ratio[j] = np.mean(all_corrects[j,:])

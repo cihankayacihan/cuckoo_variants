@@ -4,6 +4,8 @@ import multiprocessing as mp
 from joblib import Parallel, delayed
 import scipy.special as sp
 import itertools
+import scipy.stats as ss 
+
 
 Tol = 1e-1
 
@@ -36,17 +38,21 @@ def get_best_nest(nest, newnest, fitness):
 	best = nest[K,:]
 	return (fmin, best, nest, fitness)
 
-def get_cuckoos(nest, best, Lb, Ub, stepx):
+def get_cuckoos(nest, best, Lb, Ub, step):
+
+	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
+	sampled from Cauchy distribution. For sampling Mantegna method is used. """
 	n = nest.shape[0]
-	beta=3/2;
-	sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
+	#beta=3/2;
+	#sigma=(sp.gamma(1+beta)*np.sin(np.pi*beta/2)/(sp.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta);
 	for j in range(n):
 		s = nest[j,:]
-		u=np.random.randn(s.shape[0])*sigma
-		v=np.random.randn(s.shape[0])
-		step=u/abs(v)**(1/beta)
-		stepsize=stepx*step*(s-best);
-		s=s+stepsize*np.random.randn(s.shape[0])
+		# u=np.random.randn(s.shape[0])*sigma
+		# v=np.random.randn(s.shape[0])
+		# step=u/abs(v)**(1/beta)
+		# stepsize=0.01*step*(s-best);
+		# s=s+stepsize*np.random.randn(s.shape[0])
+		s=s+ss.levy.rvs(size=2)*1e-10
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 
