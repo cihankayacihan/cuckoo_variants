@@ -11,7 +11,7 @@ def fobj(u):
 	#z=-np.sin(x)*np.sin(x**2/np.pi)**20-np.sin(y)*np.sin(2*y**2/np.pi)**20
 	#z=-np.cos(x)*np.cos(y)*np.exp(-(x-np.pi)**2-(y-np.pi)**2);
 	z = 0
-	for i in range(15):
+	for i in range(2):
 		z = z + (1-u[i])**2 + 100*(u[i+1]-u[i]**2)**2 
 	return z
 
@@ -76,7 +76,7 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 		n =25
 
 	if nd is None:
-		nd=16
+		nd=3
 
 	if Lb is None:
 		Lb = np.ones(nd)*-5.12
@@ -114,35 +114,36 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 	N_iter=0
 	k = 0
 
-	while N_iter < 100000:
+	while 1:
 		new_nest = get_cuckoos(nest, best, Lb, Ub)
 		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
 		N_iter = N_iter + n
 		new_nest = empty_nests(nest, Lb, Ub, pa)
 		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
-		N_iter = N_iter + n 
+		N_iter = N_iter + n
 		if fnew < fmin:
 			if abs(fnew - fmin) < Tol:
 				break
 			fmin=fnew
 			bestnest=best
+		#if N_iter%1000==0:
+		#	print N_iter, fnew, best_nest
 
 	return bestnest, fmin, nest, fitness, N_iter
 
 if __name__ == '__main__':
-	true_best_nest = np.ones(16)
+	true_best_nest = np.ones(3)
 	pa = np.linspace(0.1,0.9,9)
 	correct_ratio = np.zeros(9)
 	iters = np.zeros(9)
 	std_iters = np.zeros(9)
-	all_iters = np.zeros((9,100))
-	all_corrects = np.zeros((9,100))
+	all_iters = np.zeros((9,50))
+	all_corrects = np.zeros((9,50))
 	for j in range(9):
 		print pa[j]
-		for i in range(100):
-			print i
+		for i in range(50):
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
-			if np.linalg.norm(true_best_nest-best_nest)<1e-2:
+			if np.linalg.norm(true_best_nest-best_nest)<1e-1:
 				all_corrects[j,i]=1
 			all_iters[j,i]=N_iter
 		correct_ratio[j] = np.mean(all_corrects[j,:])

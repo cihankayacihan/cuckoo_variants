@@ -5,6 +5,8 @@ import multiprocessing as mp
 from joblib import Parallel, delayed
 import itertools
 
+Tol = 1e-6
+
 def fobj(u):
 	x=u[0]
 	y=u[1]
@@ -86,11 +88,12 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 	if Ub is None:
 		Ub = np.ones(nd)*5
 
+	if pa is None:
+		pa = 0.25
 	# creation of the list for parameter pairs 
-	pa = 0.25
 	step = 1
-	c1 = 0.01
-	c2 = 0.06
+	c1 = 1.5
+	c2 = 1.5
 	#all_para = list(itertools.product(pa,step))
 	#threads = len(all_para)
 
@@ -103,10 +106,9 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 
 	fitness = 10**10 * np.ones((n,1))
 
-	for i in range(100):
-		best_nest, fmin, nest, fitness = single_cuckoo_search(nests,fitness,Lb,Ub,pa,step,c1,c2) 
+	best_nest, fmin, nest, fitness, N_iter = single_cuckoo_search(nests,fitness,Lb,Ub,pa,step,c1,c2) 
 
-	return best_nest, fmin, nest, fitness
+	return best_nest, fmin, nest, fitness, N_iter
 
 
 def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step,c1,c2):
@@ -122,7 +124,7 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step,c1,c2):
 
 	N_iter=0
 
-	while N_iter < 1000:
+	while N_iter < 100000:
 		new_nest = get_cuckoos(nest, best, Lb, Ub)
 		fnew, best, nest, fitness, pbest = get_best_nest(nest, new_nest, fitness, pbest)
 		N_iter = N_iter + n
@@ -135,9 +137,29 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step,c1,c2):
 		fnew, best, nest, fitness, pbest = get_best_nest(nest, new_nest, fitness, pbest)
 		N_iter = N_iter + n 
 		if fnew < fmin:
+			if abs(fnew - fmin) < Tol:
+				break
 			fmin=fnew
 			bestnest=best
 
-	return bestnest, fmin, nest, fitness
+	return bestnest, fmin, nest, fitness, N_iter
 
-best_nest, fmin, nest, fitness = cuckoo_search()
+if __name__ == '__main__':
+	true_best_nest = [2.20319, 1.57049]
+	pa = np.linspace(0.1,0.9,9)
+	correct_ratio = np.zeros(9)
+	iters = np.zeros(9)
+	std_iters = np.zeros(9)
+	all_iters = np.zeros((9,100))
+	all_corrects = np.zeros((9,100))
+	for j in range(9):
+		print pa[j]
+		for i in range(100):
+			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
+			if np.linalg.norm(true_best_nest-best_nest)<1e-1:
+				all_corrects[j,i]=1
+			all_iters[j,i]=N_iter
+		correct_ratio[j] = np.mean(all_corrects[j,:])
+		iters[j] = np.mean(all_iters[j,:])
+		std_iters[j] = np.std(all_iters[j,:])
+
