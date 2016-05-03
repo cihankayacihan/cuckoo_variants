@@ -62,6 +62,15 @@ def empty_nests(nest, Lb, Ub, pa):
 		new_nest[j,:] = simple_bounds(s, Lb, Ub)
 	return new_nest
 
+def get_cuckoo(nest, indice, Lb, Ub):
+
+	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
+	sampled from Cauchy distribution. For sampling Mantegna method is used. """
+	s = nest[indice,:]
+	s=s+ss.levy.rvs(size=2)*1e-10
+	nest[indice,:]=simple_bounds(s, Lb, Ub)
+	return nest[indice,:]
+
 def swapElements(arr, id1, id2):
 
 	arr[id1], arr[id2] = arr[id2], arr[id1]
@@ -109,7 +118,7 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 			ind = np.argmin(fmin)
 			total_best_min = fmin[ind]
 			total_best_nest = best_nest[ind]
-			total_iteration = (i+1)*1000+N_iter[ind]
+			total_iteration = (i+1)*100+N_iter[ind]
 			break
 		k = 0
 		while k<5:
@@ -135,7 +144,6 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 	old_best = np.inf
 	bestnest = best
 	done = 0
-
 	N_iter=0
 
 	while N_iter < 100:
@@ -148,7 +156,7 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 
 		new_nest = empty_nests(nest, Lb, Ub, pa)
 		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
-		N_iter = N_iter + 1 + int(n * pa)
+		N_iter = N_iter + 1 + int(n * pa[0])
 		if fnew < fmin:
 			if abs(fnew - fmin) < Tol:
 				done = 1
@@ -163,7 +171,7 @@ if __name__ == '__main__':
 	all_corrects = np.zeros(100)
 	for i in range(100):
 		best_nest, fmin, nest, fitness, total_best_min, total_best_nest, total_iteration = cuckoo_search()
-		if np.linalg.norm(true_best_nest-total_best_nest)<1e-2:
+		if np.linalg.norm(true_best_nest-total_best_nest)<1e-1:
 			all_corrects[i]=1
 		all_iters[i]=total_iteration
 	print np.mean(all_corrects), np.mean(all_iters), np.std(all_iters)

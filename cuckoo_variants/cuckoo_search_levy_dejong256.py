@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import scipy.special as sp
 import scipy.stats as ss 
+from joblib import Parallel, delayed
 
 Tol = 1e-6
 
@@ -131,17 +132,15 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 
 if __name__ == '__main__':
 	true_best_score = 0
-	pa = np.linspace(0.1,0.9,9)
-	correct_ratio = np.zeros(9)
-	iters = np.zeros(9)
-	std_iters = np.zeros(9)
-	all_iters = np.zeros((9,100))
-	all_corrects = np.zeros((9,100))
-	for j in range(9):
+	pa = np.linspace(0.3,0.7,5)
+	correct_ratio = np.zeros(5)
+	iters = np.zeros(5)
+	std_iters = np.zeros(5)
+	all_iters = np.zeros((5,100))
+	all_corrects = np.zeros((5,100))
+	for j in range(5):
 		print pa[j]
 		for i in range(100):
-			if i %10 ==0:
-				print i
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
 			if abs(true_best_score-fmin)<1:
 				all_corrects[j,i]=1
