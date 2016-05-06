@@ -156,6 +156,15 @@ def get_cuckoos(nest, best, Lb, Ub):
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 
+def get_cuckoo(nest, indice, Lb, Ub):
+
+	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
+	sampled from Cauchy distribution. For sampling Mantegna method is used. """
+	s = nest[indice,:]
+	s=s+ss.levy.rvs(size=21)*1e-10
+	nest[indice,:]=simple_bounds(s, Lb, Ub)
+	return nest[indice,:]
+
 def empty_nests(nest, Lb, Ub, pa):
 	""" This function move birds from the nests with low fitness functions to alternative locations """
 	n = nest.shape[0]
@@ -202,7 +211,6 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 
 	""" This function creates a group of cuckoos and optimizes fitness function. """
 
-	global Tol
 	n = nest.shape[0]
 	fmin, best, nest, fitness = get_best_nest(nest, nest, fitness)
 	new_best = fmin
@@ -211,19 +219,24 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 
 	N_iter=0
 	k = 0
+	global Tol
 
-	while N_iter < 1000000:
-		new_nest = get_cuckoos(nest, best, Lb, Ub)
-		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
-		N_iter = N_iter + n
+	while N_iter < 100000:
+		cuckoo = np.random.randint(n)
+		new_nest = get_cuckoo(nest, cuckoo, Lb, Ub)
+		new_obj = fobj(new_nest)
+		comp_cuckoo = np.random.randint(n)
+		if new_obj < fitness[comp_cuckoo]:
+			nest[comp_cuckoo,:] = new_nest
+
 		new_nest = empty_nests(nest, Lb, Ub, pa)
 		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
-		N_iter = N_iter + n 
 		if fnew < fmin:
 			if abs(fnew - fmin) < Tol:
 				break
 			fmin=fnew
 			bestnest=best
+		N_iter = N_iter + 1 + int(n * pa)
 
 	return bestnest, fmin, nest, fitness, N_iter
 
