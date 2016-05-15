@@ -6,42 +6,42 @@ Shc_tot       2.7e5    # molecule counts
 Sos_tot       1.3e4    # molecule counts
 Grb2_Sos_tot  4.9e4    # molecule counts
 kp1      1.667e-06 # ligand-monomer binding (scaled), units: /molecule/s
-km1           0.06 # ligand-monomer dissociation, units: /s
+km1           4.8479e-11 # ligand-monomer dissociation, units: /s
 kp2      5.556e-06 # aggregation of bound monomers (scaled), units: /molecule/s
-km2            1.62302548209 # dissociation of bound monomers, units: /s
-kp3            2.15100792914 # dimer transphosphorylation, units: /s
-km3          4.505 # dimer dephosphorylation, units: /s
-kp14             1.76499850597 # Shc transphosphorylation, units: /s
-km14          3.46155251699 # Shc dephosphorylation, units: /s
-km16         0.005 # Shc cytosolic dephosphorylation, units: /s
+km2            2.43218980526 # dissociation of bound monomers, units: /s
+kp3            4.94438925833 # dimer transphosphorylation, units: /s
+km3          0.0 # dimer dephosphorylation, units: /s
+kp14             5.0 # Shc transphosphorylation, units: /s
+km14          0.53 # Shc dephosphorylation, units: /s
+km16         1.05e-10 # Shc cytosolic dephosphorylation, units: /s
 kp9      8.333e-07 # binding of Grb2 to receptor (scaled), units: /molecule/s
-km9           3.1453343558 # dissociation of Grb2 from receptor, units: /s
+km9           1.27 # dissociation of Grb2 from receptor, units: /s
 kp10     5.556e-06 # binding of Sos to receptor (scaled), units: /molecule/s
-km10          4.81808017673 # dissociation of Sos from receptor, units: /s
+km10          5.0 # dissociation of Sos from receptor, units: /s
 kp11      1.25e-06 # binding of Grb2-Sos to receptor (scaled), units: /molecule/s
-km11          4.06865088347 # diss. of Grb2-Sos from receptor, units: /s
+km11          2.229 # diss. of Grb2-Sos from receptor, units: /s
 kp13       2.5e-05 # binding of Shc to receptor (scaled), units: /molecule/s
-km13           3.59742549534 # diss. of Shc from receptor, units: /s
+km13           3.74 # diss. of Shc from receptor, units: /s
 kp15       2.5e-07 # binding of ShcP to receptor (scaled), units: /molecule/s
-km15           3.65044656585 # diss. of ShcP from receptor, units: /s
+km15           5.0 # diss. of ShcP from receptor, units: /s
 kp17     1.667e-06 # binding of Grb2 to RP-ShcP (scaled), units: /molecule/s
-km17           2.79261238451 # diss. of Grb2 from RP-ShcP, units: /s
+km17           0.5412 # diss. of Grb2 from RP-ShcP, units: /s
 kp18       2.5e-07 # binding of ShcP-Grb2 to receptor (scaled), units: /molecule/s
-km18           3.36969631295 # diss. of ShcP-Grb2 from receptor, units: /s
+km18           0.4691 # diss. of ShcP-Grb2 from receptor, units: /s
 kp19     5.556e-06 # binding of Sos to RP-ShcP-Grb2 (scaled), units: /molecule/s
-km19        2.1115666176 # diss. of Sos from RP-ShcP-Grb2, units: /s
+km19        1.9607 # diss. of Sos from RP-ShcP-Grb2, units: /s
 kp20     6.667e-08 # binding of ShcP-Grb2-Sos to receptor (scaled), units: /molecule/s
-km20          3.37839400684 # diss. of ShcP-Grb2-Sos from receptor, units: /s
+km20          1.6130 # diss. of ShcP-Grb2-Sos from receptor, units: /s
 kp24         5e-06 # binding of Grb2-Sos to RP-ShcP (scaled), units: /molecule/s
-km24        1.35307297885 # diss. of Grb2-Sos from RP-ShcP, units: /s
+km24        1.3586 # diss. of Grb2-Sos from RP-ShcP, units: /s
 kp21     1.667e-06 # binding of ShcP to Grb2 in cytosol (scaled), units: /molecule/s
-km21          0.01 # diss. of Grb2 and SchP in cytosol, units: /s
+km21          0.0 # diss. of Grb2 and SchP in cytosol, units: /s
 kp23     1.167e-05 # binding of ShcP to Grb2-Sos in cytosol (scaled), units: /molecule/s
-km23           5.0 # diss. of Grb2-Sos and SchP in cytosol, units: /s
+km23           4.6715 # diss. of Grb2-Sos and SchP in cytosol, units: /s
 kp12     5.556e-08 # binding of Grb2 to Sos in cytosol (scaled), units: /molecule/s
-km12        1.71699400206 # diss. of Grb2 and Sos in cytosol, units: /s
+km12        2.7284 # diss. of Grb2 and Sos in cytosol, units: /s
 kp22     1.667e-05 # binding of ShcP-Grb2 to Sos in cytosol (scaled), units: /molecule/s
-km22         3.08164601812 # diss. of ShcP-Grb2 and Sos in cytosol, units: /s
+km22         3.6961 # diss. of ShcP-Grb2 and Sos in cytosol, units: /s
 loop1 = (kp9/km9)*(kp10/km10)/((kp11/km11)*(kp12/km12))
 loop2 = (kp15/km15)*(kp17/km17)/((kp21/km21)*(kp18/km18))
 loop3 = (kp18/km18)*(kp19/km19)/((kp22/km22)*(kp20/km20))

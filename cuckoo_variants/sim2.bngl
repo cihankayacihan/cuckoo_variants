@@ -1,0 +1,2 @@
+readFile({file=>"network2.net"})
+simulate({method=>"ode",t_end=>40,n_steps=>50,atol=>1e-8,rtol=>1e-8,sparse=>1})

@@ -1,0 +1,37 @@
+BioNetGen version 2.2.6
+Reading from file sim.bngl (level 0)
+Reading from file network.net (level 1)
+Read 48 parameters.
+Adding pY as allowed state of component Y1068 of molecule egfr
+Adding pY as allowed state of component Y1148 of molecule egfr
+Adding pY as allowed state of component Y317 of molecule Shc
+Read 356 species.
+Read 3749 reaction(s).
+WARNING: Found 'groups' block before 'observables': creating observables.
+Read 15 group(s).
+Finished processing file network.net.
+CPU TIME: readFile 0.47 s.
+ACTION: simulate( method=>"cvode" )
+Network simulation using cvode
+WARNING: writeFile(): Overwriting existing file ./sim.net.
+Wrote network in net format to ./sim.net.
+Running run_network on cihank
+full command: /home/cihank/Downloads/RuleBender-2.1.0-lin64/BioNetGen-2.2.6/bin/run_network -o ./sim -p cvode -a 1e-08 -r 1e-08 -b --cdat 1 --fdat 0 -g ./sim.net ./sim.net 0.8 50
+[simulation PID is: 2788]
+run_network 3.0
+Read 48 parameters
+Read 356 species
+Read 15 group(s) from ./sim.net
+Read 0 function(s)
+Read 3749 reaction(s)
+3749 reaction(s) have nonzero rate
+Initialization took 0.02 CPU seconds
+Propagating with cvode using GMRES
+Time course of concentrations written to file ./sim.cdat.
+Time course of groups written to file ./sim.gdat.
+Propagation took 6.00e-02 CPU seconds
+Program times:  0.08 CPU s 0.00 clock s 
+Updating species concentrations from ./sim.cdat
+CPU TIME: simulate 0.22 s.
+Finished processing file sim.bngl.
+CPU TIME: total 0.69 s.

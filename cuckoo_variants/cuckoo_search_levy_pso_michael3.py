@@ -6,7 +6,7 @@ from joblib import Parallel, delayed
 import itertools
 import scipy.stats as ss
 
-Tol = 1e-6
+Tol = 1e-12
 
 def fobj(u):
 	x=u[0]
@@ -39,7 +39,7 @@ def get_best_nest(nest, newnest, fitness, pbest):
 			nest[i,:]=newnest[i,:]
 		if fnew < fobj(pbest[i,:]):
 			pbest[i,:]=newnest[i,:]
-
+				
 	fmin = min(fitness)
 	K = np.argmin(fitness)
 	best = nest[K,:]
@@ -58,7 +58,7 @@ def get_cuckoos(nest, best, Lb, Ub):
 		#v=np.random.randn(s.shape[0])
 		#step=u/abs(v)**(1/beta)
 		#stepsize=0.01*step*(s-best);
-		s=s+ss.levy.rvs(size=2)*1e-16
+		s=s+ss.levy.rvs(size=2)*1e-10
 		nest[j,:]=simple_bounds(s, Lb, Ub)
 	return nest
 
@@ -67,7 +67,7 @@ def get_cuckoo(nest, indice, Lb, Ub):
 	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
 	sampled from Cauchy distribution. For sampling Mantegna method is used. """
 	s = nest[indice,:]
-	s=s+ss.levy.rvs(size=2)*1e-10
+	s=s+ss.levy.rvs(size=2)*1e-6
 	nest[indice,:]=simple_bounds(s, Lb, Ub)
 	return nest[indice,:]	
 
@@ -104,7 +104,7 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 	if pa is None:
 		pa = 0.25
 	# creation of the list for parameter pairs 
-	c1 = 1.5
+	c1 = 0.01
 	c2 = 1.5
 	step = 1.
 	#all_para = list(itertools.product(pa,step))
@@ -144,11 +144,10 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step,c1,c2):
 		comp_cuckoo = np.random.randint(n)
 		if new_obj < fitness[comp_cuckoo]:
 			nest[comp_cuckoo,:] = new_nest
+			pbest[comp_cuckoo,:] = new_nest
 
-
-		fnew, best, nest, fitness, pbest = get_best_nest(nest, new_nest, fitness, pbest)
 		gbest = get_gbest(pbest)
-		velocity = velocity + c1 * (pbest - nest) + c2 * (gbest - nest)
+		velocity = 0.7 * velocity + c1 * (pbest - nest) + c2 * (gbest - nest)
 		nest = nest + velocity
 		nest = all_bounds(nest, Lb, Ub)
 
@@ -175,7 +174,7 @@ if __name__ == '__main__':
 		print pa[j]
 		for i in range(100):
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
-			if np.linalg.norm(true_best_nest-best_nest)<1e-:
+			if np.linalg.norm(true_best_nest-best_nest)<1e-2:
 				all_corrects[j,i]=1
 			all_iters[j,i]=N_iter
 		correct_ratio[j] = np.mean(all_corrects[j,:])

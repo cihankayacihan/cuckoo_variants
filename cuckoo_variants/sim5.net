@@ -9,8 +9,8 @@ begin parameters
     7 kp1           1.667e-06  # Constant
     8 km1           4.8479e-11  # Constant
     9 kp2           5.556e-06  # Constant
-   10 km2           3.39238827479  # Constant
-   11 kp3           2.89286202719  # Constant
+   10 km2           4.31683007402  # Constant
+   11 kp3           2.31096524245  # Constant
    12 km3           0.0  # Constant
    13 kp14          5.0  # Constant
    14 km14          0.53  # Constant

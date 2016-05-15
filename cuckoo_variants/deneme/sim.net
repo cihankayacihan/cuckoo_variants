@@ -7,42 +7,42 @@ begin parameters
     5 Sos_tot       1.3e4  # Constant
     6 Grb2_Sos_tot  4.9e4  # Constant
     7 kp1           1.667e-06  # Constant
-    8 km1           4.8479e-11  # Constant
+    8 km1           0.06  # Constant
     9 kp2           5.556e-06  # Constant
-   10 km2           3.39238827479  # Constant
-   11 kp3           2.89286202719  # Constant
-   12 km3           0.0  # Constant
-   13 kp14          5.0  # Constant
-   14 km14          0.53  # Constant
-   15 km16          1.05e-10  # Constant
+   10 km2           0.254801008673  # Constant
+   11 kp3           1.59635088864  # Constant
+   12 km3           4.505  # Constant
+   13 kp14          3.64974500037  # Constant
+   14 km14          0.996491148186  # Constant
+   15 km16          0.005  # Constant
    16 kp9           8.333e-07  # Constant
-   17 km9           1.27  # Constant
+   17 km9           0.985658719813  # Constant
    18 kp10          5.556e-06  # Constant
-   19 km10          5.0  # Constant
+   19 km10          0.226428839332  # Constant
    20 kp11          1.25e-06  # Constant
-   21 km11          2.229  # Constant
+   21 km11          0.349667177739  # Constant
    22 kp13          2.5e-05  # Constant
-   23 km13          3.74  # Constant
+   23 km13          4.74723061768  # Constant
    24 kp15          2.5e-07  # Constant
-   25 km15          5.0  # Constant
+   25 km15          1.07964399154  # Constant
    26 kp17          1.667e-06  # Constant
-   27 km17          0.5412  # Constant
+   27 km17          5.0  # Constant
    28 kp18          2.5e-07  # Constant
-   29 km18          0.4691  # Constant
+   29 km18          1.69630640878  # Constant
    30 kp19          5.556e-06  # Constant
-   31 km19          1.9607  # Constant
+   31 km19          0.209031096359  # Constant
    32 kp20          6.667e-08  # Constant
-   33 km20          1.6130  # Constant
+   33 km20          7.93810759257e-11  # Constant
    34 kp24          5e-06  # Constant
-   35 km24          1.3586  # Constant
+   35 km24          4.18006539047e-11  # Constant
    36 kp21          1.667e-06  # Constant
-   37 km21          0.0  # Constant
+   37 km21          0.01  # Constant
    38 kp23          1.167e-05  # Constant
-   39 km23          4.6715  # Constant
+   39 km23          2.11933442062  # Constant
    40 kp12          5.556e-08  # Constant
-   41 km12          2.7284  # Constant
+   41 km12          1.14771036773e-08  # Constant
    42 kp22          1.667e-05  # Constant
-   43 km22          3.6961  # Constant
+   43 km22          0.177860982631  # Constant
    44 loop1         ((kp9/km9)*(kp10/km10))/((kp11/km11)*(kp12/km12))  # ConstantExpression
    45 loop2         ((kp15/km15)*(kp17/km17))/((kp21/km21)*(kp18/km18))  # ConstantExpression
    46 loop3         ((kp18/km18)*(kp19/km19))/((kp22/km22)*(kp20/km20))  # ConstantExpression

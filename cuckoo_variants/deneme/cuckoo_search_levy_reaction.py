@@ -7,7 +7,7 @@ from subprocess import call
 
 Tol = 1e-6
 
-data = np.loadtxt('datafile',delimiter=',')
+data = np.loadtxt('datafile')
 
 def run_sim(parameters):
 
@@ -23,60 +23,60 @@ def run_sim(parameters):
     	'Grb2_Sos_tot  4.9e4    # molecule counts\n' + 
 
     	'kp1      1.667e-06 # ligand-monomer binding (scaled), units: /molecule/s\n' +
-    	'km1           ' + str(parameters[0]) + ' # ligand-monomer dissociation, units: /s\n' +
+    	'km1           0.06 # ligand-monomer dissociation, units: /s\n' +
 
     	'kp2      5.556e-06 # aggregation of bound monomers (scaled), units: /molecule/s\n' +
-    	'km2            ' + str(parameters[1]) + ' # dissociation of bound monomers, units: /s\n' +
+    	'km2            ' + str(parameters[0]) + ' # dissociation of bound monomers, units: /s\n' +
 
-    	'kp3            ' + str(parameters[2]) + ' # dimer transphosphorylation, units: /s\n' +
-    	'km3          ' + str(parameters[3]) + ' # dimer dephosphorylation, units: /s\n' +
+    	'kp3            ' + str(parameters[1]) + ' # dimer transphosphorylation, units: /s\n' +
+    	'km3          4.505 # dimer dephosphorylation, units: /s\n' +
 
-    	'kp14             ' + str(parameters[4]) + ' # Shc transphosphorylation, units: /s\n' +
-    	'km14          ' + str(parameters[5]) + ' # Shc dephosphorylation, units: /s\n' +
+    	'kp14             ' + str(parameters[2]) + ' # Shc transphosphorylation, units: /s\n' +
+    	'km14          ' + str(parameters[3]) + ' # Shc dephosphorylation, units: /s\n' +
     
-    	'km16         ' + str(parameters[6]) + ' # Shc cytosolic dephosphorylation, units: /s\n' +
+    	'km16         0.005 # Shc cytosolic dephosphorylation, units: /s\n' +
 
     	'kp9      8.333e-07 # binding of Grb2 to receptor (scaled), units: /molecule/s\n' + 
-    	'km9           ' + str(parameters[7]) + ' # dissociation of Grb2 from receptor, units: /s\n' +
+    	'km9           ' + str(parameters[4]) + ' # dissociation of Grb2 from receptor, units: /s\n' +
 
     	'kp10     5.556e-06 # binding of Sos to receptor (scaled), units: /molecule/s\n' +
-    	'km10          ' + str(parameters[8]) + ' # dissociation of Sos from receptor, units: /s\n' +
+    	'km10          ' + str(parameters[5]) + ' # dissociation of Sos from receptor, units: /s\n' +
 
     	'kp11      1.25e-06 # binding of Grb2-Sos to receptor (scaled), units: /molecule/s\n' +
-    	'km11          ' + str(parameters[9]) +  ' # diss. of Grb2-Sos from receptor, units: /s\n' +
+    	'km11          ' + str(parameters[6]) + ' # diss. of Grb2-Sos from receptor, units: /s\n' +
     
 	    'kp13       2.5e-05 # binding of Shc to receptor (scaled), units: /molecule/s\n' +
-    	'km13           ' + str(parameters[10]) + ' # diss. of Shc from receptor, units: /s\n' +
+    	'km13           ' + str(parameters[7]) + ' # diss. of Shc from receptor, units: /s\n' +
 
     	'kp15       2.5e-07 # binding of ShcP to receptor (scaled), units: /molecule/s\n' +
-    	'km15           ' + str(parameters[11]) + ' # diss. of ShcP from receptor, units: /s\n' +
+    	'km15           ' + str(parameters[8]) + ' # diss. of ShcP from receptor, units: /s\n' +
 
     	'kp17     1.667e-06 # binding of Grb2 to RP-ShcP (scaled), units: /molecule/s\n' +
-    	'km17           ' + str(parameters[12]) + ' # diss. of Grb2 from RP-ShcP, units: /s\n' +
+    	'km17           ' + str(parameters[9]) + ' # diss. of Grb2 from RP-ShcP, units: /s\n' +
 
     	'kp18       2.5e-07 # binding of ShcP-Grb2 to receptor (scaled), units: /molecule/s\n' +
-    	'km18           ' + str(parameters[13]) + ' # diss. of ShcP-Grb2 from receptor, units: /s\n' +
+    	'km18           ' + str(parameters[10]) + ' # diss. of ShcP-Grb2 from receptor, units: /s\n' +
 
     	'kp19     5.556e-06 # binding of Sos to RP-ShcP-Grb2 (scaled), units: /molecule/s\n' +
-    	'km19        ' + str(parameters[14]) + ' # diss. of Sos from RP-ShcP-Grb2, units: /s\n' +
+    	'km19        ' + str(parameters[11]) + ' # diss. of Sos from RP-ShcP-Grb2, units: /s\n' +
 
     	'kp20     6.667e-08 # binding of ShcP-Grb2-Sos to receptor (scaled), units: /molecule/s\n' +
-    	'km20          ' + str(parameters[15]) + ' # diss. of ShcP-Grb2-Sos from receptor, units: /s\n' +
+    	'km20          ' + str(parameters[12]) + ' # diss. of ShcP-Grb2-Sos from receptor, units: /s\n' +
 
     	'kp24         5e-06 # binding of Grb2-Sos to RP-ShcP (scaled), units: /molecule/s\n' +
-    	'km24        ' + str(parameters[16]) + ' # diss. of Grb2-Sos from RP-ShcP, units: /s\n' +
+    	'km24        ' + str(parameters[13]) + ' # diss. of Grb2-Sos from RP-ShcP, units: /s\n' +
 
     	'kp21     1.667e-06 # binding of ShcP to Grb2 in cytosol (scaled), units: /molecule/s\n' +
-    	'km21          ' + str(parameters[17]) + ' # diss. of Grb2 and SchP in cytosol, units: /s\n' + 
+    	'km21          0.01 # diss. of Grb2 and SchP in cytosol, units: /s\n' + 
 
     	'kp23     1.167e-05 # binding of ShcP to Grb2-Sos in cytosol (scaled), units: /molecule/s\n' + 
-    	'km23           ' + str(parameters[18]) + ' # diss. of Grb2-Sos and SchP in cytosol, units: /s\n' +
+    	'km23           ' + str(parameters[14]) + ' # diss. of Grb2-Sos and SchP in cytosol, units: /s\n' +
 
     	'kp12     5.556e-08 # binding of Grb2 to Sos in cytosol (scaled), units: /molecule/s\n' +
-    	'km12        ' + str(parameters[19]) + ' # diss. of Grb2 and Sos in cytosol, units: /s\n' +
+    	'km12        ' + str(parameters[15]) + ' # diss. of Grb2 and Sos in cytosol, units: /s\n' +
 
     	'kp22     1.667e-05 # binding of ShcP-Grb2 to Sos in cytosol (scaled), units: /molecule/s\n' +
-    	'km22         ' + str(parameters[20]) + ' # diss. of ShcP-Grb2 and Sos in cytosol, units: /s\n' + 
+    	'km22         ' + str(parameters[16]) + ' # diss. of ShcP-Grb2 and Sos in cytosol, units: /s\n' + 
 
     'loop1 = (kp9/km9)*(kp10/km10)/((kp11/km11)*(kp12/km12))\n' +
     'loop2 = (kp15/km15)*(kp17/km17)/((kp21/km21)*(kp18/km18))\n' +
@@ -99,7 +99,7 @@ def run_sim(parameters):
 	error = 0
 	for i in range(sim.shape[0]):
 		for j in range(1,16):
-			error += (data[i,j]-sim[i,j])
+			error += ((data[i,j]-sim[i,j])/np.max(data[:,j]))**2
 
 	return error
 
@@ -161,7 +161,7 @@ def get_cuckoo(nest, indice, Lb, Ub):
 	""" Move a randomly selected cuckoo with Levy flight. The direction of flight is random and the length is 
 	sampled from Cauchy distribution. For sampling Mantegna method is used. """
 	s = nest[indice,:]
-	s=s+ss.levy.rvs(size=21)*1e-10
+	s=s+ss.levy.rvs(size=17)*1e-10
 	nest[indice,:]=simple_bounds(s, Lb, Ub)
 	return nest[indice,:]
 
@@ -182,7 +182,7 @@ def cuckoo_search(n=None, nd=None, Lb=None, Ub=None, pa=None):
 		n =25
 
 	if nd is None:
-		nd=21
+		nd=17
 
 	if Lb is None:
 		Lb = np.ones(nd)*0
@@ -231,6 +231,7 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 
 		new_nest = empty_nests(nest, Lb, Ub, pa)
 		fnew, best, nest, fitness = get_best_nest(nest, new_nest, fitness)
+		print fnew, best, N_iter
 		if fnew < fmin:
 			if abs(fnew - fmin) < Tol:
 				break
@@ -241,17 +242,23 @@ def single_cuckoo_search(nest,fitness,Lb,Ub,pa,step):
 	return bestnest, fmin, nest, fitness, N_iter
 
 if __name__ == '__main__':
+	true_best_nest = np.array([0.1,0.5,3,0.03,0.05,0.06,0.03,0.6,0.3,0.1,0.3,0.0214,0.12,0.0429,0.1,0.0015,0.064])
 	pa = np.linspace(0.1,0.5,5)
 	correct_ratio = np.zeros(5)
 	iters = np.zeros(5)
 	std_iters = np.zeros(5)
-	all_iters = np.zeros((5,100))
-	all_corrects = np.zeros((5,3,21))
+	all_iters = np.zeros((5,3))
+	all_corrects = np.zeros((5,3))
 	for j in range(5):
 		for i in range(3):
 			print pa[j],i
 			best_nest, fmin, nest, fitness, N_iter = cuckoo_search(pa = pa[j])
-			all_corrects[5,3,:]=best_nest
+			if np.linalg.norm(true_best_nest-best_nest)<1e-2:
+				all_corrects[j,i]=1
+			all_iters[j,i]=N_iter
+		correct_ratio[j] = np.mean(all_corrects[j,:])
+		iters[j] = np.mean(all_iters[j,:])
+		std_iters[j] = np.std(all_iters[j,:])
 
 
 

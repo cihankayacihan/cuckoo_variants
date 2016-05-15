@@ -8,8 +8,8 @@ Grb2_Sos_tot  4.9e4    # molecule counts
 kp1      1.667e-06 # ligand-monomer binding (scaled), units: /molecule/s
 km1           4.8479e-11 # ligand-monomer dissociation, units: /s
 kp2      5.556e-06 # aggregation of bound monomers (scaled), units: /molecule/s
-km2            0 # dissociation of bound monomers, units: /s
-kp3            0 # dimer transphosphorylation, units: /s
+km2            4.31683007402 # dissociation of bound monomers, units: /s
+kp3            2.31096524245 # dimer transphosphorylation, units: /s
 km3          0.0 # dimer dephosphorylation, units: /s
 kp14             5.0 # Shc transphosphorylation, units: /s
 km14          0.53 # Shc dephosphorylation, units: /s
